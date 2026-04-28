@@ -16,6 +16,7 @@ pysilfont.cfg
 /src/silfont.egg-info
 /src/silfont/__pycache__
 /.pytest_cache
+/.vscode
 /tests/localufos.csv
 
 .idea
