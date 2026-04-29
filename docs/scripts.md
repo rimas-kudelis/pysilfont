@@ -17,7 +17,7 @@ There are further example scripts supplied with Pysilfont, and some of these are
 | [psfchangegdlnames](#psfchangegdlnames)          | Change graphite names within GDL based on mappings files                                               |
 | [psfchangettfglyphnames](#psfchangettfglyphnames) | Change glyph names in a ttf from working names to production names                                     |
 | [psfcheckbasicchars](#psfcheckbasicchars)        | Check UFO for glyphs that represent recommended basic characters                                       |
-| [psfcheckclassorders](#psfcheckclassorders)      | Verify classes defined in xml have correct ordering where needed                                       |
+| [psfcheckclassesxml](#psfcheckclassesxml)      | Verify classes defined in xml have correct ordering where needed                                       |
 | [psfcheckftml](#psfcheckftml)                    | Check ftml files for structural integrity                                                              |
 | [psfcheckglyphinventory](#psfcheckglyphinventory) | Warn for differences in glyph inventory and encoding between UFO and input file (e.g., glyph_data.csv) |
 | [psfcheckinterpolatable](#psfcheckinterpolatable) | Check UFOs in a designspace file are compatible with interpolation                                     |
@@ -260,8 +260,8 @@ There is more documentation about the character list [here](https://github.com/s
 and additional information can be shown on screen or in the log file by increasing the log level to I (-p scrlevel=i or -p loglevel=i)
 
 ---
-#### psfcheckclassorders
-usage: **`psfcheckclassorders [--gname GNAME] [--sort HEADER] [classes] [glyphdata]`**
+#### psfcheckclassesxml
+usage: **`psfcheckclassesxml [--gname GNAME] [--sort HEADER] [classes] [glyphdata]`**
 
 _([Standard options](docs.md#standard-command-line-options) also apply)_
 
@@ -304,9 +304,9 @@ Based on the sort order information extracted from the `glyphdata` file, this to
     </class>
   ```
 
-Note that the Graphite workflow extracts glyph order from the ttf file, but `psfcheckclassorders` gets it from `glyphdata` argument; there is, therefore, an assumption that the glyph order indicated in `glyphdata` actually matches that in the ttf file.
+Note that the Graphite workflow extracts glyph order from the ttf file, but `psfcheckclassesxml` gets it from `glyphdata` argument; there is, therefore, an assumption that the glyph order indicated in `glyphdata` actually matches that in the ttf file.
 
-`psfcheckclassorders` will also issue warning a warning message if there are glyphs named in the `classes` file which are not included in the `glyphdata` file. While this is [intentionally] not an error for either Graphite or OpenType (relevant tools simply ignore such missing glyphs), it may be helpful in catching typos that result in class miss-alignment and therefore bugs.  By default warning messages are sent to the log file;
+`psfcheckclassesxml` will also issue warning a warning message if there are glyphs named in the `classes` file which are not included in the `glyphdata` file. While this is [intentionally] not an error for either Graphite or OpenType (relevant tools simply ignore such missing glyphs), it may be helpful in catching typos that result in class miss-alignment and therefore bugs.  By default warning messages are sent to the log file;
 use `-p scrlevel=W` to also route them to the terminal.
 
 ---
