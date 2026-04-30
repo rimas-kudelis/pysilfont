@@ -1,0 +1,15 @@
+2026-04-29 21:03:57 Progress: Running:  psfcheckclassesxml --font tests/input/font-psf-test/source/PsfTest-Regular.ufo tests/input/psfcheckclasses.xml tests/input/font-psf-test/source/glyph_data.csv -g -l local/testresults/ufo/psfcheckclassesxml.log
+2026-04-29 21:03:57 Progress: Opening file for input: tests/input/font-psf-test/source/glyph_data.csv
+2026-04-29 21:03:57 Progress: Opening UFO for input: tests/input/font-psf-test/source/PsfTest-Regular.ufo
+2026-04-29 21:03:57 Progress: Opening class definition file: tests/input/psfcheckclasses.xml
+2026-04-29 21:03:57 Error:    Invalid class definition file: class 'shouldMatch2' defined more than once
+2026-04-29 21:03:57 Error:    Class 'lengthMismatch1' (length 4) and 'lengthMismatch2' (length 3) have unequal length
+2026-04-29 21:03:57 Warning:  Class 'fixed2' includes 'fixed' attribute; abandoning graphite ordering checks.
+2026-04-29 21:03:57 Error:    Class 'notFixed1' (length 6) and 'notFixed3_lengthMismatch' (length 5) have unequal length
+2026-04-29 21:03:57 Error:    Class 'lengthMismatch5' (length 6) and 'lengthMismatch6' (length 5) have unequal length
+2026-04-29 21:03:57 Error:    Class 'graphiteDisordered1' and 'graphiteDisordered2' inconsistent order glyphs 'LtnCapA' and 'LtnSmA'
+2026-04-29 21:03:57 Error:    Class 'graphiteDisordered1' and 'graphiteDisordered2' inconsistent order glyphs 'LtnCapE' and 'LtnSmE'
+2026-04-29 21:03:57 Warning:  Glyphs mentioned in classes.xml but not present in glyph_data:
+     LtnCCapB 
+2026-04-29 21:03:57 Warning:  Glyphs mentioned in classes.xml but not present in UFO:
+     LtnCCapB 

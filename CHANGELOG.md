@@ -14,6 +14,7 @@ General updates for new year, 2024
 
 ### Changed
 
+- Updated psfcheckclassesxml to detect more kinds of errors.
 - Rename psfcheckclassorders to psfcheckclassesxml
 - Fixed #103 attempting to remove `com.schriftgestaltung.Glyphs.shapeOrder` crashes when the glyph has no lib (1.8.1.dev13)
 - Fixed #102 "psfbuildfea.py crashes sometimes with fonttools v4.58.1" (1.8.1.dev12)

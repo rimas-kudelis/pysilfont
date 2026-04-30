@@ -261,33 +261,51 @@ and additional information can be shown on screen or in the log file by increasi
 
 ---
 #### psfcheckclassesxml
-usage: **`psfcheckclassesxml [--gname GNAME] [--sort HEADER] [classes] [glyphdata]`**
+usage: **`psfcheckclassesxml [--font FONT] [--gname GNAME] [--psname PSNAME] [--sort HEADER] [--filter [FILTER]] [classes] [glyphdata]`**
 
 _([Standard options](docs.md#standard-command-line-options) also apply)_
 
-Verify classes defined in xml have correct ordering where needed.
+Identify potential typos in an XML class definition file by comparing glyphnames with font and glyph_data.
+Verify specially-identified classes defined in xml have correct length and, if desired, correct ordering.
 
 Looks for comment lines in the `classes` file that match the string:
 ```
   *NEXT n CLASSES MUST MATCH*
 ```
-where `n` is the number of upcoming class definitions that must result in the
-same glyph alignment when glyph names are sorted by TTF order.
+where `n` is the number of upcoming class definitions that will be compared for length and ordering.
 
 ```
-optional arguments:
+positional arguments:
   classes           Class definition file in XML format (default `classes.xml`)
   glyphdata         Glyph info csv file (default `glyph_data.csv`)
-  --gname GNAME     Column header for glyph name (default `glyph_name`)
-  --sort HEADER     Column header for sort order (default `sort_final`)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -f FONT, --font FONT  TTF or UFO input font
+  --gname GNAME         Column header for glyph working name (default: `glyph_name`)
+  --psname PSNAME       Column header for ps_name (default: `ps_name`)
+  --sort HEADER         Column header for sort order (default: whichever 
+                           it can find of 'sort_final', 'DesignerOrder', and 'sort_final_cdg')
+  --filter [FILTER]     Include only interesting names (identified by optional regex) for 
+                           some reporting purposes (default: `^[^_]`, i.e. non-component glyphs)
+  -g, --graphite        Include graphite class order testing
 ```
 #### Notes
 
-Classes defined in xml format (typically `source/classes.xml`) can be accessed by both Graphite and OpenType code. For historical reasons there is a difference in the way they are processed: for Graphite (only), the members of the classes are re-ordered based on the glyphIDs in the ttf. 
+`psfcheckclassesxml` requires an input font, either a built TTF or the input UFO. If none is provided on the command line, it will use the first Regular face font it can find in `results/*.ttf`, `source/masters/*.ufo`, and `source/*.ufo`.  
 
-For classes used just for rule contexts, glyph order doesn't matter. But for classes used for n-to-n substitutions, order *does* matter and the classes have to be "aligned".
+Glyph classes defined in xml format (typically `source/classes.xml`) can be accessed by both Graphite and OpenType code. Unlike FEA or GDL source files, glyph names mentioned in the classes XML file that are not present in the font project are silently ignored. While this allows a classes file to be shared among multiple projects, it also introduces the risk of undectected typos within the file. `psfcheckclassesxml` will issue warning messages if there are glyphs named in the `classes` file which are not included in the `glyphdata` or which are not the font file. It will also list _interesting_ glyph names found in the `glyphdata` or the input font which are not mentioned in the classes file -- in case some of those may be helpful in identifying how to correct typos in the classes file.
 
-Based on the sort order information extracted from the `glyphdata` file, this tool examines specially-marked groups of class definitions from the `classes` file to determine if they remain aligned after classes are reordered, and issues error messages if not. Here is an example identifying a set of three classes that must align:
+*Checking _matching_ classes*
+
+For classes used just for rule contexts, neither the length of the class nor the glyph order within the class matter. But for classes used for n-to-n substitutions, the length of the classes must be the same and the order of glyphs within the class *does* matter.
+
+For historical reasons there is a difference in the way XML class definitions are processed:
+- for OpenType (FEA) projects, the members of classes are kept in the order they appear in the classes.xml file.
+- for Graphite however, by default the members of the classes are re-ordered based on the glyph order within the ttf. 
+
+This tool examines specially-marked groups of XML class definitions to determine if they are the same length and, in case of `-g`, remain aligned after classes are reordered. Here is an example identifying a set of three classes that must align:
+
 ```
     <!-- *NEXT 3 CLASSES MUST MATCH* -->
         
@@ -304,10 +322,9 @@ Based on the sort order information extracted from the `glyphdata` file, this to
     </class>
   ```
 
-Note that the Graphite workflow extracts glyph order from the ttf file, but `psfcheckclassesxml` gets it from `glyphdata` argument; there is, therefore, an assumption that the glyph order indicated in `glyphdata` actually matches that in the ttf file.
+The format of the initial comment is quite strict -- everything between the two `*` must be exactly as shown (except that the decimal number can change).
 
-`psfcheckclassesxml` will also issue warning a warning message if there are glyphs named in the `classes` file which are not included in the `glyphdata` file. While this is [intentionally] not an error for either Graphite or OpenType (relevant tools simply ignore such missing glyphs), it may be helpful in catching typos that result in class miss-alignment and therefore bugs.  By default warning messages are sent to the log file;
-use `-p scrlevel=W` to also route them to the terminal.
+By default warning messages are sent to the log file; use `-p scrlevel=W` to also route them to the terminal.
 
 ---
 #### psfcheckftml
